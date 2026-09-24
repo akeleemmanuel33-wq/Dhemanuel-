@@ -1,0 +1,18 @@
+<input id="ip" placeholder="Enter IPv4 e.g. 8.8.8.8">
+<button onclick="lookup()">Check</button>
+<pre id="out"></pre>
+
+<script>
+async function lookup() {
+  const ip = document.getElementById("ip").value.trim();
+  const out = document.getElementById("out");
+  try {
+    const res = await fetch(`https://ipwho.is/${ip}`);
+    const d = await res.json();
+    if (!d.success) return out.textContent = d.message;
+    out.textContent = `${d.city}, ${d.region}, ${d.country}\nLat/Lng: ${d.latitude}, ${d.longitude}\nISP: ${d.connection.isp}`;
+  } catch (e) {
+    out.textContent = "Request failed: " + e.message;
+  }
+}
+</script>
